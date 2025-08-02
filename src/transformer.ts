@@ -1,4 +1,4 @@
-import {
+import type {
   Root, Link, LinkReference, Definition, Node, RootContent,
   PhrasingContent, Text, Parents,
 } from 'mdast';
