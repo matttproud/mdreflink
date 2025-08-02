@@ -12,7 +12,7 @@
     ".": "./dist/transformer.js"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc && esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
+    "build": "rimraf dist && tsc && esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
     "start": "node dist/index.js",
     "prepublishOnly": "npm run build && npm run lint && npm run lint:package",
     "test": "npm run build && vitest run",
@@ -64,6 +64,7 @@
     "mdast-util-to-markdown": "^2.1.2",
     "micromark-extension-frontmatter": "^2.0.0",
     "publint": "^0.3.12",
+    "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vitest": "^3.2.4"
