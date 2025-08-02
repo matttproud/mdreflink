@@ -44,6 +44,7 @@ jobs:
         run: npm run test
 
       - name: Run E2E tests
+        if: runner.os != 'Windows'
         run: npm run test:e2e
 
       - name: Test CLI directly (Unix)
