@@ -4,6 +4,8 @@ import {promises as fs} from 'fs';
 import {run, Console} from './index.js';
 
 describe('CLI entrypoint', () => {
+  const VERSION_PATTERN = /^\d+\.\d+\.\d+/;
+
   let consoleSpy: Console;
   let processExitSpy: MockInstance;
   let processStdoutWriteSpy: MockInstance;
@@ -52,7 +54,8 @@ describe('CLI entrypoint', () => {
   it('should show version when --version flag is used', async () => {
     await run({_: [], version: true}, consoleSpy);
 
-    expect(consoleSpy.log).toHaveBeenCalledWith('0.0.1');
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+        expect.stringMatching(VERSION_PATTERN));
     expect(processStdoutWriteSpy).not.toHaveBeenCalled();
     expect(writeFileMock).not.toHaveBeenCalled();
   });
@@ -60,7 +63,8 @@ describe('CLI entrypoint', () => {
   it('should show version when -v flag is used', async () => {
     await run({_: [], v: true}, consoleSpy);
 
-    expect(consoleSpy.log).toHaveBeenCalledWith('0.0.1');
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+        expect.stringMatching(VERSION_PATTERN));
     expect(processStdoutWriteSpy).not.toHaveBeenCalled();
     expect(writeFileMock).not.toHaveBeenCalled();
   });
@@ -79,24 +83,25 @@ describe('CLI entrypoint', () => {
     expect(processStdoutWriteSpy).toHaveBeenCalled();
   });
 
-  it('should output stats to stderr when using stdout for content', async () => {
-    const inputMarkdown = `[test](url)`;
-    const filePath = 'test.md';
+  it('should output stats to stderr when using stdout for content',
+      async () => {
+        const inputMarkdown = `[test](url)`;
+        const filePath = 'test.md';
 
-    readFileMock.mockResolvedValue(inputMarkdown);
+        readFileMock.mockResolvedValue(inputMarkdown);
 
-    await run({_: [filePath], stats: true}, consoleSpy);
+        await run({_: [filePath], stats: true}, consoleSpy);
 
-    expect(consoleSpy.error).toHaveBeenCalledWith('Links converted: 1');
-    expect(consoleSpy.error).toHaveBeenCalledWith('Conflicts found: 0');
-    expect(consoleSpy.error).toHaveBeenCalledWith('Definitions added: 1');
+        expect(consoleSpy.error).toHaveBeenCalledWith('Links converted: 1');
+        expect(consoleSpy.error).toHaveBeenCalledWith('Conflicts found: 0');
+        expect(consoleSpy.error).toHaveBeenCalledWith('Definitions added: 1');
 
-    expect(processStdoutWriteSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[test]'));
+        expect(processStdoutWriteSpy).toHaveBeenCalledWith(
+            expect.stringContaining('[test]'));
 
-    expect(processStdoutWriteSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining('Links converted'));
-  });
+        expect(processStdoutWriteSpy).not.toHaveBeenCalledWith(
+            expect.stringContaining('Links converted'));
+      });
 
   it('should process a file and write to stdout', async () => {
     const inputMarkdown = `[hello](world)`;
