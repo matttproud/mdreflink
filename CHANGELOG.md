@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.3...mdreflink-v0.0.4) (2025-08-02)
+
+
+### Bug Fixes
+
+* override Release Please starting points ([3aa921b](https://github.com/matttproud/mdreflink/commit/3aa921b75c69db459d48b3760f4054b020489b80))
+
 ## [0.0.2](https://github.com/matttproud/mdreflink/compare/v0.0.1...v0.0.2) (2025-08-02)
 
 
