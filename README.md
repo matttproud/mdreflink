@@ -79,6 +79,18 @@ This was my first time really vibe coding a project.  If you see something
 curious or suboptimal, please flag it.  At this point, will be developing this
 exclusively by hand.
 
+[![CI](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml)
+[![Security](https://github.com/matttproud/mdreflink/actions/workflows/security.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/security.yml)
+[![Cross-Platform](https://github.com/matttproud/mdreflink/actions/workflows/compatibility.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/compatibility.yml)
+[![Package Health](https://github.com/matttproud/mdreflink/actions/workflows/package-check.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/package-check.yml)
+
+[![npm version](https://badge.fury.io/js/mdreflink.svg)](https://badge.fury.io/js/mdreflink)
+[![npm downloads](https://img.shields.io/npm/dm/mdreflink.svg)](https://www.npmjs.com/package/mdreflink)
+[![Node.js Version](https://img.shields.io/node/v/mdreflink)](https://nodejs.org/)
+
+[![codecov](https://codecov.io/gh/matttproud/mdreflink/branch/main/graph/badge.svg)](https://codecov.io/gh/matttproud/mdreflink)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ### Development Setup
 
 A Node.js environment is required for development. After cloning the
