@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    // --- Type Checking ---
+    "strict": true,
+    "skipLibCheck": true,
+
+    // --- Modules ---
+    // This is the key for modern Node.js ESM support.
+    // It enforces modern rules, like requiring file extensions in imports.
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+
+    // --- Language and Environment ---
+    "target": "es2022",
+    "lib": ["es2022"],
+
+    // --- Output ---
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+}

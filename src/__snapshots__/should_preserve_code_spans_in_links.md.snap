@@ -1,0 +1,3 @@
+Check out [`sync.Map`] for details.
+
+[`sync.Map`]: https://golang.org/pkg/sync/#Map

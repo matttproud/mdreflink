@@ -1,0 +1,15 @@
+# Section 1
+
+[a](url1)
+[b]
+[c]
+
+[b]: url2
+[c]: url3
+
+# Section 2
+
+[a](url4)
+[d]
+
+[d]: url5

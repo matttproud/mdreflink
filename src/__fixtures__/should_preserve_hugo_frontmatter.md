@@ -1,0 +1,7 @@
+---
+title: "My Awesome Post"
+date: 2025-07-22T00:00:00Z
+draft: false
+---
+
+This is a post about [a link](to/somewhere).

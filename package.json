@@ -1,0 +1,83 @@
+{
+  "name": "mdreflink",
+  "version": "0.0.1",
+  "description": "Convert Markdown inline links to reference links with smart placement",
+  "type": "module",
+  "main": "dist/transformer.js",
+  "types": "dist/transformer.d.ts",
+  "bin": {
+    "mdreflink": "dist/index.js"
+  },
+  "exports": {
+    ".": "./dist/transformer.js"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc && esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build && npm run lint && npm run lint:package",
+    "test": "npm run build && vitest run",
+    "test:update": "npm run build && vitest run -u",
+    "test:e2e": "scripts/e2e-test.sh",
+    "coverage": "npm run build && vitest run --coverage",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:package": "publint"
+  },
+  "keywords": [
+    "markdown",
+    "link",
+    "reference",
+    "cli",
+    "formatter",
+    "mdast",
+    "remark"
+  ],
+  "author": "Matt T. Proud <matt.proud@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matttproud/mdreflink.git"
+  },
+  "homepage": "https://github.com/matttproud/mdreflink#readme",
+  "bugs": {
+    "url": "https://github.com/matttproud/mdreflink/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^24.1.0",
+    "@types/unist": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "esbuild": "^0.25.8",
+    "eslint": "^9.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsdoc": "^52.0.0",
+    "mdast-util-from-markdown": "^2.0.2",
+    "mdast-util-frontmatter": "^2.0.1",
+    "mdast-util-to-markdown": "^2.1.2",
+    "micromark-extension-frontmatter": "^2.0.0",
+    "publint": "^0.3.12",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
+  },
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
+  "dependencies": {
+    "mdast": "^2.3.2",
+    "mdast-util-to-string": "^4.0.0",
+    "minimist": "^1.2.8",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  }
+}
