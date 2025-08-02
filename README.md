@@ -79,6 +79,18 @@ This was my first time really vibe coding a project.  If you see something
 curious or suboptimal, please flag it.  At this point, will be developing this
 exclusively by hand.
 
+[![CI](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml)
+[![Security](https://github.com/matttproud/mdreflink/actions/workflows/security.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/security.yml)
+[![Cross-Platform](https://github.com/matttproud/mdreflink/actions/workflows/compatibility.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/compatibility.yml)
+[![Package Health](https://github.com/matttproud/mdreflink/actions/workflows/package-check.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/package-check.yml)
+
+[![npm version](https://badge.fury.io/js/mdreflink.svg)](https://badge.fury.io/js/mdreflink)
+[![npm downloads](https://img.shields.io/npm/dm/mdreflink.svg)](https://www.npmjs.com/package/mdreflink)
+[![Node.js Version](https://img.shields.io/node/v/mdreflink)](https://nodejs.org/)
+
+[![codecov](https://codecov.io/gh/matttproud/mdreflink/branch/main/graph/badge.svg)](https://codecov.io/gh/matttproud/mdreflink)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ### Development Setup
 
 A Node.js environment is required for development. After cloning the
@@ -175,5 +187,38 @@ npm pack
 This creates a tarball showing exactly what files will be included in the
 published package. Remember to clean up the generated .tgz file
 afterward.
+
+### Release Tagging
+
+This project uses automated releases triggered by Git tags. Tags must follow the `v{version}` format (e.g., `v1.2.3`) to match JavaScript ecosystem conventions.
+
+**To create a new release:**
+
+1. Update the version in `package.json`:
+   ```bash
+   npm version patch  # or minor, major
+   ```
+
+2. Create an annotated tag with release notes:
+   ```bash
+   git tag -a v1.2.3 -m "Release v1.2.3
+
+   - Add feature X
+   - Fix bug Y  
+   - Update dependencies"
+   ```
+
+3. Push the tag to trigger automated release:
+   ```bash
+   git push origin v1.2.3
+   ```
+
+The GitHub Actions workflow will automatically:
+- Run all tests (unit and e2e)
+- Validate the package
+- Publish to npm with provenance
+- Create a GitHub release
+
+**Note:** The tag version (without 'v' prefix) must exactly match the version in `package.json` or the release will fail.
 
 [publint]: https://publint.dev/

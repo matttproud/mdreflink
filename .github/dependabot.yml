@@ -1,0 +1,46 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "matttproud"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # NOTE: The groups below organize related dependencies into single PRs
+    # instead of creating separate PRs for each package. This reduces noise
+    # and makes it easier to review related updates together.
+    # 
+    # IMPORTANT: When adding new dependencies to package.json, update the
+    # patterns below to ensure they're grouped appropriately:
+    # - Add dev tools/testing deps to "dev-dependencies" group.
+    # - Add runtime/production deps to "production-dependencies" group.
+    # - Use glob patterns (e.g., "eslint*") to catch related packages.
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "@typescript-eslint/*"
+          - "eslint*"
+          - "typescript*"
+          - "*vitest*"
+          - "esbuild"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        # Runtime dependencies that affect end users: be more conservative
+        # with updates (patch-only) to minimize breaking changes.
+        patterns:
+          - "mdast*"
+          - "remark*"
+          - "unified"
+          - "unist*"
+          - "minimist"
+        update-types:
+          - "patch"

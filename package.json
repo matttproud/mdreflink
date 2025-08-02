@@ -45,6 +45,7 @@
   "engines": {
     "node": ">=22.0.0"
   },
+  "//": "IMPORTANT: When adding dependencies, update .github/dependabot.yml patterns to ensure proper grouping in PRs",
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@types/mdast": "^4.0.4",
