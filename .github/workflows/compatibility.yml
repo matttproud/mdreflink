@@ -1,0 +1,65 @@
+name: Cross-Platform Compatibility
+
+on:
+  schedule:
+    # Run monthly on the 1st at 3 AM UTC.
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'scripts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['22']
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Test CLI directly (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          echo "# Test Document" > test.md
+          echo "" >> test.md
+          echo "This is a [test link](https://example.com) in markdown." >> test.md
+          node dist/index.js test.md
+          rm test.md
+
+      - name: Test CLI directly (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "# Test Document" > test.md
+          echo "" >> test.md
+          echo "This is a [test link](https://example.com) in markdown." >> test.md
+          node dist/index.js test.md
+          del test.md
