@@ -1,74 +1,40 @@
-name: Release
-
 on:
   push:
-    tags:
-      - 'v*'
-
+    branches:
+      - main
+name: release-please
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write # Required for npm provenance.
-    
+      contents: write      # Required for Release Please to create releases and tags
+      pull-requests: write # Required for Release Please to create PRs
+      id-token: write      # Required for npm provenance    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: googleapis/release-please-action@v4
+        id: release
         with:
-          node-version: '22'
+          release-type: node
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm ci
-
+          cache: 'npm'
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
       - name: Build and test
         run: |
           npm run build
           npm run test
           npm run test:e2e
-
+        if: ${{ steps.release.outputs.release_created }}          
       - name: Verify package
         run: npm run lint:package
-
-      - name: Extract version from tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Verify package.json version matches tag
-        run: |
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          TAG_VERSION="${{ steps.get_version.outputs.VERSION }}"
-          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
-            echo "Error: package.json version ($PACKAGE_VERSION) does not match tag version ($TAG_VERSION)"
-            exit 1
-          fi
-          echo "✅ Version check passed: $PACKAGE_VERSION"
-
-      - name: Publish to npm
-        run: npm publish --provenance
+        if: ${{ steps.release.outputs.release_created }}        
+      - run: npm publish --provenance
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.get_version.outputs.VERSION }}
-          body: |
-            ## Changes
-            
-            See the [changelog](https://github.com/${{ github.repository }}/compare/v${{ steps.get_version.outputs.VERSION }}...HEAD) for details.
-            
-            ## Installation
-            
-            ```bash
-            npm install -g mdreflink@${{ steps.get_version.outputs.VERSION }}
-            ```
-          draft: false
-          prerelease: false
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        if: ${{ steps.release.outputs.release_created }}

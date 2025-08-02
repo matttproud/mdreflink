@@ -71,7 +71,7 @@ export interface TransformStats {
  */
 function hasDisallowedElements(linkNode: Link | LinkReference): boolean {
   let hasDisallowed = false;
-  visit({type: 'root', children: linkNode.children}, (node: Node): boolean | void => {
+  visit({type: 'root', children: linkNode.children}, (node: Node): boolean | void => { // eslint-disable-line max-len
     if (DISALLOWED_INNER_LINK_ELEMENTS.includes(node.type)) {
       hasDisallowed = true;
       return false; // Stop traversal
@@ -85,7 +85,7 @@ function hasDisallowedElements(linkNode: Link | LinkReference): boolean {
  * @param tree - The mdast tree to transform
  * @returns Object containing the transformed tree and statistics
  */
-export function transformLinksToReferences(tree: Root): { tree: Root; stats: TransformStats } {
+export function transformLinksToReferences(tree: Root): { tree: Root; stats: TransformStats } { // eslint-disable-line max-len
   const linkTextToUrls = new Map<string, Set<string>>();
   const existingDefs = new Map<string, Definition>();
   const stats: TransformStats = {
@@ -137,7 +137,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
 
   // --- 2. Link Transformation Pass --- //
   // Mutate the tree to transform links into their final form.
-  visit(tree, (node: Node, index: number | undefined, parent: Parents | undefined): void => {
+  visit(tree, (node: Node, index: number | undefined, parent: Parents | undefined): void => { // eslint-disable-line max-len
     if (node.type !== 'link' && node.type !== 'linkReference') {
       return;
     }
