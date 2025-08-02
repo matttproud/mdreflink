@@ -2,12 +2,13 @@
 * text=auto
 
 # Explicitly declare text files to always be normalized and converted to native
-# line endings on checkout#
+# line endings on checkout.
 *.md text
 *.js text
 *.ts text
 *.json text
 *.yml text
+*.snap text
 
 # Declare files that will always have CRLF line endings on checkout.
 # *.bat text eol=crlf

@@ -28,10 +28,14 @@ describe('transformLinksToReferences', () => {
         const {tree: transformedTree} = transformLinksToReferences(tree);
         const result = treeToMarkdown(transformedTree);
 
+        // Normalize line endings for cross-platform compatibility.
+        const normalizedResult = result.replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n');
+
         const snapshotFileName = `${file}.snap`;
         const snapshotPath = path.join(__dirname, '__snapshots__',
             snapshotFileName);
-        await expect(result).toMatchFileSnapshot(snapshotPath);
+        await expect(normalizedResult).toMatchFileSnapshot(snapshotPath);
       });
     });
   });
