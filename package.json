@@ -1,6 +1,6 @@
 {
   "name": "mdreflink",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Convert Markdown inline links to reference links with smart placement",
   "type": "module",
   "main": "dist/transformer.js",
