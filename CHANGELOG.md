@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.4...mdreflink-v0.0.5) (2025-08-02)
+
+
+### Bug Fixes
+
+* drop legacy mdast use ([#13](https://github.com/matttproud/mdreflink/issues/13)) ([fb47c65](https://github.com/matttproud/mdreflink/commit/fb47c653311f422bc83c128229eef295db66eaa2))
+
 ## [0.0.4](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.3...mdreflink-v0.0.4) (2025-08-02)
 
 
