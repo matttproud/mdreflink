@@ -1,0 +1,10 @@
+{
+  "bootstrap-sha": "b5e5f9cb5e29588d52a4bfa72e1c5f4d3b505789",
+  "last-release-sha": "b5e5f9cb5e29588d52a4bfa72e1c5f4d3b505789",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "mdreflink"
+    }
+  }
+}

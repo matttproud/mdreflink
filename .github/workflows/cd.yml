@@ -9,12 +9,10 @@ jobs:
     permissions:
       contents: write      # Required for Release Please to create releases and tags
       pull-requests: write # Required for Release Please to create PRs
-      id-token: write      # Required for npm provenance    
+      id-token: write      # Required for npm provenance
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
-        with:
-          release-type: node
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v4
@@ -30,10 +28,10 @@ jobs:
           npm run build
           npm run test
           npm run test:e2e
-        if: ${{ steps.release.outputs.release_created }}          
+        if: ${{ steps.release.outputs.release_created }}
       - name: Verify package
         run: npm run lint:package
-        if: ${{ steps.release.outputs.release_created }}        
+        if: ${{ steps.release.outputs.release_created }}
       - run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
