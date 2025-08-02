@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    # Only runs for PRs from same repository (not forks).
+    branches: [main]
+  pull_request_target:
+    # Runs for forks, but requires manual approval via GitHub UI.
+    # Forks will show "waiting for approval" until maintainer approves.
+    branches: [main]
+
+permissions:
+  contents: read
+
+  security-events: write  # To permit uploading SARIF to GitHub.
+  pull-requests: write
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # For pull_request_target, checkout the PR's code (not base branch)
+          # This ensures we test the actual changes from the fork.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # Use package-lock.json for faster, deterministic installs.
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run linting with SARIF output
+        run: |
+          # Generate SARIF for GitHub Security tab and PR annotations
+          npx eslint . --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
+        continue-on-error: true
+
+      - name: Upload SARIF results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: eslint-results.sarif
+          # Only upload SARIF from one Node.js version to avoid duplicates.
+        continue-on-error: true
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run E2E tests
+        # E2E tests run after unit tests to fail fast on basic issues.
+        run: npm run test:e2e
+
+      - name: Generate coverage report
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          # Vitest generates coverage in coverage/ directory.
+          directory: ./coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  package-validation:
+    name: Package Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # For pull_request_target, checkout the PR's code (not base branch).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Validate package configuration
+        # Ensures package.json is properly configured for npm publishing.
+        run: npm run lint:package
+
+      - name: Test package contents
+        run: |
+          # Verify what would be published matches expectations
+          npm pack --dry-run

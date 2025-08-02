@@ -6,5 +6,6 @@ npm-debug.log*
 .npm
 *.tsbuildinfo
 .eslintcache
+eslint-results.sarif
 .env
 .env.local
