@@ -74,7 +74,7 @@
     "dist/*.d.ts"
   ],
   "dependencies": {
-    "mdast": "^2.3.2",
+    "mdast": "^3.0.0",
     "mdast-util-to-string": "^4.0.0",
     "minimist": "^1.2.8",
     "remark-frontmatter": "^5.0.0",
