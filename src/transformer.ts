@@ -8,7 +8,7 @@ import {toMarkdown, State, Info} from 'mdast-util-to-markdown';
 import {frontmatterToMarkdown} from 'mdast-util-frontmatter';
 
 /**
- * Preserves square brackets in non-link contexts
+ * Preserves square brackets in non-link contexts.
  * @param node - The text node being processed
  * @param parent - The parent node
  * @param state - The markdown generation state
@@ -20,6 +20,7 @@ const simpleTextHandler = (node: Text, parent: Parents | undefined,
   const isLinkContext = state.stack.includes('link') ||
       state.stack.includes('linkReference') ||
       state.stack.includes('definition');
+
   if (isLinkContext) {
     return state.safe(node.value, info);
   }
@@ -27,8 +28,46 @@ const simpleTextHandler = (node: Text, parent: Parents | undefined,
   // - Converts: "Text with \[brackets]" → "Text with [brackets]"
   // - Preserves: "Text with \*asterisks*" → "Text with \*asterisks*"
   const UNESCAPE_SQUARE_BRACKETS = /\\(\[|\])/g;
-  const result = state.safe(node.value, info);
-  return result.replace(UNESCAPE_SQUARE_BRACKETS, '$1');
+
+  // Hugo shortcode patterns - preserve angle brackets and percent signs.
+  const HUGO_SHORTCODE_UNESCAPE = /\\([<%])/g;
+  const containsHugoShortcode = /\{\{[<%].*?[%>]\}\}/.test(node.value);
+
+  let result = state.safe(node.value, info);
+  result = result.replace(UNESCAPE_SQUARE_BRACKETS, '$1');
+
+  // If the text contains Hugo shortcodes, unescape the delimiters.
+  if (containsHugoShortcode) {
+    result = result.replace(HUGO_SHORTCODE_UNESCAPE, '$1');
+  }
+
+  return result;
+};
+
+/**
+ * Preserves Hugo shortcodes in definition URLs.
+ * @param node - The definition node being processed
+ * @param parent - The parent node
+ * @param state - The markdown generation state
+ * @param info - Context information about the current position
+ * @returns The processed definition with appropriate escaping
+ */
+const definitionHandler = (node: Definition, parent: Parents | undefined,
+    state: State, info: Info): string => {
+  // Preserve Hugo shortcodes in URLs like {{<ref>}} and {{% ref %}}.
+  const HUGO_SHORTCODE_PATTERN = /\{\{[<%].*?[%>]\}\}/;
+  const url = node.url;
+
+  // If the URL contains Hugo shortcodes, don't escape them.
+  if (HUGO_SHORTCODE_PATTERN.test(url)) {
+    const safeTitle = node.title ? ` "${node.title}"` : '';
+    return `[${node.identifier}]: ${url}${safeTitle}`;
+  }
+
+  // For non-Hugo URLs, manually construct the definition to avoid recursion.
+  const safeUrl = state.safe(node.url, info);
+  const safeTitle = node.title ? ` "${state.safe(node.title, info)}"` : '';
+  return `[${node.identifier}]: ${safeUrl}${safeTitle}`;
 };
 
 const MARKDOWN_OPTIONS = {
@@ -38,11 +77,12 @@ const MARKDOWN_OPTIONS = {
   resourceLink: true,
   handlers: {
     text: simpleTextHandler,
+    definition: definitionHandler,
   },
 };
 
 /**
- * Converts an mdast tree to markdown string using standard options
+ * Converts an mdast tree to markdown string using standard options.
  * @param tree - The mdast tree to convert
  * @returns The generated markdown string
  */
@@ -51,12 +91,12 @@ export function treeToMarkdown(tree: Root): string {
 }
 
 const DISALLOWED_INNER_LINK_ELEMENTS: string[] = [
-  // Add element types here that should prevent reference link creation
+  // Add element types here that should prevent reference link creation.
   // e.g., 'image', 'html', etc.
 ];
 
 /**
- * Statistics about the transformation process
+ * Statistics about the transformation process.
  */
 export interface TransformStats {
     linksConverted: number;
@@ -65,7 +105,7 @@ export interface TransformStats {
 }
 
 /**
- * Check if a link contains disallowed content types
+ * Check if a link contains disallowed content types.
  * @param linkNode - The link node to check
  * @returns True if the link contains disallowed content
  */
@@ -74,14 +114,14 @@ function hasDisallowedElements(linkNode: Link | LinkReference): boolean {
   visit({type: 'root', children: linkNode.children}, (node: Node): boolean | void => { // eslint-disable-line max-len
     if (DISALLOWED_INNER_LINK_ELEMENTS.includes(node.type)) {
       hasDisallowed = true;
-      return false; // Stop traversal
+      return false; // Stop traversal.
     }
   });
   return hasDisallowed;
 }
 
 /**
- * Transform inline links to reference links in a markdown AST
+ * Transform inline links to reference links in a markdown AST.
  * @param tree - The mdast tree to transform
  * @returns Object containing the transformed tree and statistics
  */
@@ -142,7 +182,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
       return;
     }
     // Skip nodes that can't be replaced: root nodes (no parent) or
-    // nodes not in a children array (no index)
+    // nodes not in a children array (no index).
     if (!parent || index === undefined) return;
 
     const linkNode = node as Link | LinkReference;
@@ -167,7 +207,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
       // If it's already a 'link', it's in the correct form.
     } else {
       // If it's not conflicting, ensure it's a shortcut reference.
-      // Convert the link children to markdown text for the identifier
+      // Convert the link children to markdown text for the identifier.
       const identifier = toMarkdown({
         type: 'paragraph',
         children: linkNode.children,
@@ -182,7 +222,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
       };
       parent.children[index] = newRef;
 
-      // Only count as converted if we're converting from inline to reference
+      // Only count as converted if we're converting from inline to reference.
       if (linkNode.type === 'link') {
         stats.linksConverted++;
       }
@@ -225,16 +265,16 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
         return;
       }
       const linkNode = node as LinkReference;
-      // Use for both conflict checking and definition creation
+      // Use for both conflict checking and definition creation.
       const linkText = toString(linkNode);
-      // Use the identifier from the linkReference
+      // Use the identifier from the linkReference.
       const linkIdentifier = linkNode.identifier;
       if (conflictingTexts.has(linkText) ||
           definitionCreatedFor.has(linkIdentifier)) {
         return;
       }
 
-      // Skip links with disallowed content types
+      // Skip links with disallowed content types.
       if (hasDisallowedElements(linkNode)) return;
 
       if (!defsForThisSection.has(linkIdentifier)) {
@@ -250,7 +290,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
       }
     });
 
-    // Sort definitions lexicographically by identifier
+    // Sort definitions lexicographically by identifier.
     const sortedIdentifiers = Array.from(defsForThisSection.keys()).sort();
     for (const id of sortedIdentifiers) {
       newTreeChildren.push(defsForThisSection.get(id)!);

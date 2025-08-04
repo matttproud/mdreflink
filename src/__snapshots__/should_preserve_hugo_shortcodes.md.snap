@@ -1,0 +1,29 @@
+---
+title: "Hugo Shortcode Test"
+---
+
+# Hugo Shortcode Test
+
+But this normal link should be transformed: [normal link]
+
+And this reference link should be preserved: [preserved link]
+
+{{% foo %}} ## Section 1 {{% /foo %}}
+
+{{< bar >}} ## Section 2 {{< /bar >}}
+
+Some text with {{% highlight go %}} code here {{% /highlight %}} and more text.
+
+Also {{< figure src="image.jpg" >}} caption text {{< /figure >}} works.
+
+<!-- The following definitions contain Hugo shortcodes and should not have < > or % escaped -->
+
+[example]: {{<ref "foo.md" >}}
+[another]: {{< relref "bar.md" >}}
+[shortcode]: {{< myshortcode param="value" >}}
+[percent\_example]: {{% ref "baz.md" %}}
+[percent\_relref]: {{% relref "qux.md" %}}
+[percent\_shortcode]: {{% myshortcode param="value" %}}
+
+[normal link]: https://example.com
+[preserved link]: https://preserved.com

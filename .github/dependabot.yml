@@ -15,7 +15,7 @@ updates:
     # NOTE: The groups below organize related dependencies into single PRs
     # instead of creating separate PRs for each package. This reduces noise
     # and makes it easier to review related updates together.
-    # 
+    #
     # IMPORTANT: When adding new dependencies to package.json, update the
     # patterns below to ensure they're grouped appropriately:
     # - Add dev tools/testing deps to "dev-dependencies" group.
