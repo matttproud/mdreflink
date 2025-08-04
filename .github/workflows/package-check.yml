@@ -17,7 +17,7 @@ permissions:
 jobs:
   package-health:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,9 +65,9 @@ jobs:
           echo ""
           echo "🔧 Testing CLI with sample input:"
           echo "# Test
-          
+
           This is a [test link](https://example.com)." | node dist/index.js || echo "CLI test completed"
-          
+
       - name: Check TypeScript types
         run: |
           # Verify TypeScript declaration files are valid

@@ -195,23 +195,23 @@ This project uses automated releases triggered by Git tags. Tags must follow the
 **To create a new release:**
 
 1. Update the version in `package.json`:
-   ```bash
-   npm version patch  # or minor, major
-   ```
+    ```bash
+    npm version patch  # or minor, major
+    ```
 
 2. Create an annotated tag with release notes:
-   ```bash
-   git tag -a v1.2.3 -m "Release v1.2.3
+    ```bash
+    git tag -a v1.2.3 -m "Release v1.2.3
 
-   - Add feature X
-   - Fix bug Y  
-   - Update dependencies"
-   ```
+    - Add feature X
+    - Fix bug Y
+    - Update dependencies"
+    ```
 
 3. Push the tag to trigger automated release:
-   ```bash
-   git push origin v1.2.3
-   ```
+    ```bash
+    git push origin v1.2.3
+    ```
 
 The GitHub Actions workflow will automatically:
 - Run all tests (unit and e2e)

@@ -132,8 +132,4 @@ export async function main() {
   }
 }
 
-const isMainModule = import.meta.url.endsWith(process.argv[1]);
-
-if (isMainModule) {
-  main();
-}
+main();
