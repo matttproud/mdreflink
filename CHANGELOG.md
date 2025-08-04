@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.6](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.5...mdreflink-v0.0.6) (2025-08-04)
+
+
+### Bug Fixes
+
+* broken release versioning ([521d513](https://github.com/matttproud/mdreflink/commit/521d513308a53524c63e5307a14599de3064340a))
+* Hugo shortcodes in defn and npx entrypoint. ([#15](https://github.com/matttproud/mdreflink/issues/15)) ([e5f1a2a](https://github.com/matttproud/mdreflink/commit/e5f1a2a0e4e80f82df4175565bc9175cb4a1e23c))
+
 ## [0.0.5](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.4...mdreflink-v0.0.5) (2025-08-02)
 
 
