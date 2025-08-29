@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.6...mdreflink-v0.0.7) (2025-08-29)
+
+
+### Bug Fixes
+
+* **transformer:** prevent escaping fragment links ([#22](https://github.com/matttproud/mdreflink/issues/22)) ([1b3a012](https://github.com/matttproud/mdreflink/commit/1b3a01203cb4e3dc7a9c501ead95b34488e8b0fa))
+
 ## [0.0.6](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.5...mdreflink-v0.0.6) (2025-08-04)
 
 
