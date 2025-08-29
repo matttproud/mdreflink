@@ -18,8 +18,8 @@ import {frontmatterToMarkdown} from 'mdast-util-frontmatter';
 const simpleTextHandler = (node: Text, parent: Parents | undefined,
     state: State, info: Info): string => {
   const isLinkContext = state.stack.includes('link') ||
-      state.stack.includes('linkReference') ||
-      state.stack.includes('definition');
+    state.stack.includes('linkReference') ||
+    state.stack.includes('definition');
 
   if (isLinkContext) {
     return state.safe(node.value, info);
@@ -64,6 +64,12 @@ const definitionHandler = (node: Definition, parent: Parents | undefined,
     return `[${node.identifier}]: ${url}${safeTitle}`;
   }
 
+  // If the URL is a fragment-only link, do not escape it.
+  if (url.startsWith('#')) {
+    const safeTitle = node.title ? ` "${state.safe(node.title, info)}"` : '';
+    return `[${node.identifier}]: ${url}${safeTitle}`;
+  }
+
   // For non-Hugo URLs, manually construct the definition to avoid recursion.
   const safeUrl = state.safe(node.url, info);
   const safeTitle = node.title ? ` "${state.safe(node.title, info)}"` : '';
@@ -99,9 +105,9 @@ const DISALLOWED_INNER_LINK_ELEMENTS: string[] = [
  * Statistics about the transformation process.
  */
 export interface TransformStats {
-    linksConverted: number;
-    conflictsFound: number;
-    definitionsAdded: number;
+  linksConverted: number;
+  conflictsFound: number;
+  definitionsAdded: number;
 }
 
 /**
@@ -270,7 +276,7 @@ export function transformLinksToReferences(tree: Root): { tree: Root; stats: Tra
       // Use the identifier from the linkReference.
       const linkIdentifier = linkNode.identifier;
       if (conflictingTexts.has(linkText) ||
-          definitionCreatedFor.has(linkIdentifier)) {
+        definitionCreatedFor.has(linkIdentifier)) {
         return;
       }
 
