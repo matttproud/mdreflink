@@ -61,7 +61,7 @@
     "esbuild": "^0.25.8",
     "eslint": "^9.32.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^52.0.0",
+    "eslint-plugin-jsdoc": "^54.5.0",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-frontmatter": "^2.0.1",
     "mdast-util-to-markdown": "^2.1.2",
