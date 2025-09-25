@@ -66,17 +66,17 @@ mdreflink -w document.md
 ## Developer and Maintainer Instructions
 
 Note that I am not a fluent JavaScript or TypeScript developer, so I am
-providing this mostly for posterity for myself.  This was probably my deepest
+providing this mostly for posterity for myself. This was probably my deepest
 foray into that ecosystem for a project.
 
 ### Notes
 
 This tool was initially developed through — drum roll — vibe coding the initial
-project specification and heavily hand iterating on the output.  It taught me
+project specification and heavily hand iterating on the output. It taught me
 a lot about a complex and ornate ecosystem that I otherwise knew little about.
 
-This was my first time really vibe coding a project.  If you see something
-curious or suboptimal, please flag it.  At this point, will be developing this
+This was my first time really vibe coding a project. If you see something
+curious or suboptimal, please flag it. At this point, will be developing this
 exclusively by hand.
 
 [![CI](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml/badge.svg)](https://github.com/matttproud/mdreflink/actions/workflows/ci.yml)
@@ -195,25 +195,28 @@ This project uses automated releases triggered by Git tags. Tags must follow the
 **To create a new release:**
 
 1. Update the version in `package.json`:
-    ```bash
-    npm version patch  # or minor, major
-    ```
+
+   ```bash
+   npm version patch  # or minor, major
+   ```
 
 2. Create an annotated tag with release notes:
-    ```bash
-    git tag -a v1.2.3 -m "Release v1.2.3
 
-    - Add feature X
-    - Fix bug Y
-    - Update dependencies"
-    ```
+   ```bash
+   git tag -a v1.2.3 -m "Release v1.2.3
+
+   - Add feature X
+   - Fix bug Y
+   - Update dependencies"
+   ```
 
 3. Push the tag to trigger automated release:
-    ```bash
-    git push origin v1.2.3
-    ```
+   ```bash
+   git push origin v1.2.3
+   ```
 
 The GitHub Actions workflow will automatically:
+
 - Run all tests (unit and e2e)
 - Validate the package
 - Publish to npm with provenance

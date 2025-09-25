@@ -7,9 +7,9 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # Required for Release Please to create releases and tags
+      contents: write # Required for Release Please to create releases and tags
       pull-requests: write # Required for Release Please to create PRs
-      id-token: write      # Required for npm provenance
+      id-token: write # Required for npm provenance
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -18,8 +18,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
         if: ${{ steps.release.outputs.release_created }}
       - run: npm ci
         if: ${{ steps.release.outputs.release_created }}
