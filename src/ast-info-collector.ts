@@ -136,7 +136,21 @@ export class AstInfoCollector {
     this.headingNodeToId.set(h, this.headingSeq);
   }
 
+  private hasImageChild(link: Link | LinkReference): boolean {
+    return link.children.some((child) => child.type === "image");
+  }
+
+  private isAllowed(link: Link | LinkReference): boolean {
+    if (this.hasImageChild(link)) {
+      return false;
+    }
+    return true;
+  }
+
   private ingestLinkNode(l: Link | LinkReference, parent?: Parents): void {
+    if (!this.isAllowed(l)) {
+      return;
+    }
     const linkName = normalizeLinkName(l);
     if (!linkName) {
       return;
