@@ -10,7 +10,6 @@ import type {
 import { visit } from "unist-util-visit";
 import { toMarkdown } from "mdast-util-to-markdown";
 
-// Data Models
 export type LinkName = string & { readonly __brand: "LinkName" };
 export type LinkIdentifier = string & { readonly __brand: "LinkIdentifier" };
 
@@ -39,11 +38,6 @@ export class HeadingItem {
   ) {}
 }
 
-// Helper functions
-/**
- *
- * @param s
- */
 /**
  * Collapses text into a whitespace-concise form for purposes of creating
  * canonical Markdown identifiers.
@@ -55,10 +49,6 @@ export function normalizeText(s: string): string {
 }
 
 /**
- *
- * @param node
- */
-/**
  * Extracts the nested Markdown that formed the link's name.
  * @param node The link to extract the text from.
  * @returns The extracted link text.
@@ -69,10 +59,6 @@ export function extractLinkTextLiteral(node: Link | LinkReference): string {
 }
 
 /**
- *
- * @param node
- */
-/**
  * Normalizes link-related nodes into a canonical LinkName form.
  * @param node The node to be canonicalized.
  * @returns The normalized link name.
@@ -81,10 +67,6 @@ export function normalizeLinkName(node: Link | LinkReference): LinkName {
   return normalizeText(extractLinkTextLiteral(node)) as LinkName;
 }
 
-/**
- *
- * @param raw
- */
 /**
  * Normalizes raw strings into canonical LinkIdentifier form.
  * @param raw The string to be canonicalized.

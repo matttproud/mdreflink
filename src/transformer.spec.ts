@@ -15,7 +15,7 @@ describe("transformLinksToReferences", () => {
   const testDataDir = path.join(__dirname, "__fixtures__");
   const testFiles = readdirSync(testDataDir);
 
-  // Create individual tests for each fixture file using toMatchFileSnapshot
+  // Create individual tests for each fixture file using toMatchFileSnapshot.
   testFiles.forEach((file) => {
     describe(`fixture: ${file}`, () => {
       it("should transform correctly", async () => {
