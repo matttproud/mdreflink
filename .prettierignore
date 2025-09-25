@@ -1,0 +1,10 @@
+node_modules
+
+dist
+coverage
+
+CHANGELOG.md
+release-please-config.json
+
+src/__fixtures__
+src/__snapshots__

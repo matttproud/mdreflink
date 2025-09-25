@@ -1,0 +1,17 @@
+This document tests cleanup of redundant full-form references that span
+multiple lines, particularly when they exceed the 80-character line limit.
+
+Let's see what happens [when lines overflow], [when lines
+overflow], [when lines overflow], [when lines
+overflow], [when lines overflow], and [when lines
+overflow], and [when lines overflow], and [when lines
+overflow], moreover [when lines overflow], and [when
+lines overflow], and [when lines overflow], and [when
+lines overflow].
+Also test with multiline spanning:
+
+I am pretty fucking disappointed with text canonicalization as [this is a very
+long multiline link text that spans the extent of my patience].
+
+[this is a very long multiline link text that spans the extent of my patience]: about:blank
+[when lines overflow]: about:blank

@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 
-  security-events: write  # To permit uploading SARIF to GitHub.
+  security-events: write # To permit uploading SARIF to GitHub.
   pull-requests: write
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 22
           # Use package-lock.json for faster, deterministic installs.
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -93,7 +93,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci

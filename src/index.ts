@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-import {promises as fs} from 'fs';
-import minimist from 'minimist';
-import {unified} from 'unified';
-import remarkParse from 'remark-parse';
-import remarkFrontmatter from 'remark-frontmatter';
-import {transformLinksToReferences, treeToMarkdown} from './transformer.js';
-import packageJson from '../package.json' with { type: 'json' };
+import { promises as fs } from "fs";
+import minimist from "minimist";
+import { transformMarkdownToReferences } from "./transformer.js";
+import packageJson from "../package.json" with { type: "json" };
+import { Config } from "./config.js";
 
 /**
  * Console interface for substitution
@@ -26,7 +24,7 @@ async function readAll(stream: NodeJS.ReadableStream): Promise<string> {
   for await (const chunk of stream) {
     chunks.push(chunk as Buffer);
   }
-  return Buffer.concat(chunks).toString('utf8');
+  return Buffer.concat(chunks).toString("utf8");
 }
 
 /**
@@ -35,8 +33,9 @@ async function readAll(stream: NodeJS.ReadableStream): Promise<string> {
  * @param logger - Console interface for output
  */
 export async function run(
-    argv: minimist.ParsedArgs,
-    logger: Console = globalThis.console): Promise<void> {
+  argv: minimist.ParsedArgs,
+  logger: Console = globalThis.console,
+): Promise<void> {
   if (argv.help || argv.h) {
     logger.log(`mdreflink - Convert Markdown inline links to reference links
 
@@ -52,7 +51,7 @@ OPTIONS:
 EXAMPLES:
   mdreflink document.md              # Output to stdout
   mdreflink -w document.md           # Modify file in-place
-  cat file.md | mdreflink            # Process stdin
+  mdreflink < file.md                # Process stdin
   mdreflink --stats document.md      # Show statistics
   mdreflink --help                   # Show this help
 `);
@@ -67,30 +66,28 @@ EXAMPLES:
   const files = argv._;
 
   if (files.length > 1) {
-    throw new Error('Only one file may be specified.');
+    throw new Error("Only one file may be specified.");
   }
 
   const filePath = files[0];
-  const writeInPlace = argv.w || argv['write-in-place'] || false;
-  const useStdin = !filePath || filePath === '-';
+  const writeInPlace = argv.w || argv["write-in-place"] || false;
+  const useStdin = !filePath || filePath === "-";
 
   if (writeInPlace && useStdin) {
-    throw new Error('The -w flag cannot be used with standard input.');
+    throw new Error("The -w flag cannot be used with standard input.");
   }
 
-  const input = useStdin ?
-      await readAll(process.stdin) :
-      await fs.readFile(filePath, 'utf8');
+  const input = useStdin
+    ? await readAll(process.stdin)
+    : await fs.readFile(filePath, "utf8");
 
-  const processor = unified()
-      .use(remarkParse)
-      .use(remarkFrontmatter, ['yaml', 'toml']);
+  const config = new Config();
+  config.columnWidth = 80;
 
-  const tree = await processor.parse(input);
-
-  const {tree: transformedTree, stats} = transformLinksToReferences(tree);
-
-  const output = treeToMarkdown(transformedTree);
+  const { content: output, stats } = transformMarkdownToReferences(
+    input,
+    config,
+  );
 
   if (argv.stats) {
     logger.error(`Links converted: ${stats.linksConverted}`);
@@ -100,7 +97,7 @@ EXAMPLES:
 
   if (writeInPlace) {
     if (input !== output) {
-      await fs.writeFile(filePath, output, 'utf8');
+      await fs.writeFile(filePath, output, "utf8");
     }
   } else {
     process.stdout.write(output);
@@ -113,19 +110,20 @@ EXAMPLES:
 export async function main() {
   try {
     const argv = minimist(process.argv.slice(2), {
-      boolean: ['w', 'write-in-place', 'h', 'help', 'v', 'version', 'stats'],
+      boolean: ["w", "write-in-place", "h", "help", "v", "version", "stats"],
       alias: {
-        w: 'write-in-place',
-        h: 'help',
-        v: 'version',
+        w: "write-in-place",
+        h: "help",
+        v: "version",
       },
     });
     await run(argv);
   } catch (err: unknown) {
-    const error = err as Error & {code?: string; path?: string};
-    const message = error.code === 'ENOENT' ?
-      `File not found at '${error.path}'.` :
-      error.message || 'An unknown error occurred.';
+    const error = err as Error & { code?: string; path?: string };
+    const message =
+      error.code === "ENOENT"
+        ? `File not found at '${error.path}'.`
+        : error.message || "An unknown error occurred.";
 
     process.stderr.write(`Error: ${message}\n`);
     process.exit(1);

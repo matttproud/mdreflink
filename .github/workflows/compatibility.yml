@@ -3,14 +3,14 @@ name: Cross-Platform Compatibility
 on:
   schedule:
     # Run monthly on the 1st at 3 AM UTC.
-    - cron: '0 3 1 * *'
+    - cron: "0 3 1 * *"
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'src/**'
-      - 'package.json'
-      - 'scripts/**'
+      - "src/**"
+      - "package.json"
+      - "scripts/**"
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['22']
+        node-version: ["22"]
 
     runs-on: ${{ matrix.os }}
 

@@ -23,7 +23,9 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:package": "publint",
     "lint:editorconfig": "eclint check '**/*.{ts,js,json,md,yml,yaml}' '!node_modules/**' '!dist/**' '!coverage/**'",
-    "lint:editorconfig:fix": "eclint fix '**/*.{ts,js,json,md,yml,yaml}' '!node_modules/**' '!dist/**' '!coverage/**'"
+    "lint:editorconfig:fix": "eclint fix '**/*.{ts,js,json,md,yml,yaml}' '!node_modules/**' '!dist/**' '!coverage/**'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "markdown",
@@ -61,11 +63,13 @@
     "esbuild": "^0.25.8",
     "eslint": "^9.32.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsdoc": "^54.5.0",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-frontmatter": "^2.0.1",
     "mdast-util-to-markdown": "^2.1.2",
     "micromark-extension-frontmatter": "^2.0.0",
+    "prettier": "^3.6.2",
     "publint": "^0.3.12",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
