@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.7...mdreflink-v0.0.8) (2025-09-25)
+
+
+### Bug Fixes
+
+* linked images should be ignored ([#30](https://github.com/matttproud/mdreflink/issues/30)) ([ec62e8c](https://github.com/matttproud/mdreflink/commit/ec62e8c05e826a5a2d6bfff13a5678e71a3f513f)), closes [#29](https://github.com/matttproud/mdreflink/issues/29)
+
 ## [0.0.7](https://github.com/matttproud/mdreflink/compare/mdreflink-v0.0.6...mdreflink-v0.0.7) (2025-08-29)
 
 
