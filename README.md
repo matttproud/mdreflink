@@ -188,6 +188,8 @@ This creates a tarball showing exactly what files will be included in the
 published package. Remember to clean up the generated .tgz file
 afterward.
 
+[publint]: https://publint.dev/
+
 ### Release Tagging
 
 This project uses automated releases triggered by Git tags. Tags must follow the `v{version}` format (e.g., `v1.2.3`) to match JavaScript ecosystem conventions.
@@ -217,11 +219,9 @@ This project uses automated releases triggered by Git tags. Tags must follow the
 
 The GitHub Actions workflow will automatically:
 
-- Run all tests (unit and e2e)
-- Validate the package
-- Publish to npm with provenance
-- Create a GitHub release
+* Run all tests (unit and e2e)
+* Validate the package
+* Publish to npm with provenance
+* Create a GitHub release
 
 **Note:** The tag version (without 'v' prefix) must exactly match the version in `package.json` or the release will fail.
-
-[publint]: https://publint.dev/
